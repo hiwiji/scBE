@@ -1,4 +1,4 @@
-package exercise;
+package exercise.chapter_12;
 
 public class Type1 {
     /**

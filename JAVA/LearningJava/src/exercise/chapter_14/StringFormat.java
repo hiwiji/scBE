@@ -14,9 +14,8 @@ public class StringFormat {
         // String 1
         String result;
 
-        result = String.format("문자서식: %s, %S", str1, str1);
+        result = String.format("문자서식: %s, %S", str1, str1); // Happy, HAPPY
         System.out.println(result);
-
 
         // Int
         int myInt = 10;
