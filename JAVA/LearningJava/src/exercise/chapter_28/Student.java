@@ -28,12 +28,12 @@ public class Student {
     }
 
     Student(String schoolName, int classYear, int classroomNum, int studentNum, String name, String pGender) {
-        this.schoolName = SchoolName;
-        this.classYear = ClassYear;
-        this.classroomNumber = ClassroomNum;
-        this.studentNumber = StudentNum;
-        this.name = Name;
-        this.gender = Gender;
+        this.schoolName = schoolName;
+        this.classYear = classYear;
+        this.classroomNumber = classroomNum;
+        this.studentNumber = studentNum;
+        this.name = name;
+        this.gender = gender;
     }
 
     // getter
