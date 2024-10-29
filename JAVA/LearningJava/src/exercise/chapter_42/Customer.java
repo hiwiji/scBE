@@ -1,10 +1,13 @@
-package exercise.chapter_34;
+package exercise.chapter_42;
 
 public class Customer {
 
     // 속성
     // 고객ID, 고객이름, 고객 등급, 보너스포인트, 포인트 적립 비율
     static int serialNums = 1; // 클래스변수
+    String hello1 = "Hello";
+    String hello2 = "Hello2";
+
 
     protected String customerID; // 고객id
     protected String name; // 고객이름

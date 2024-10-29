@@ -1,9 +1,14 @@
-package exercise.chapter_34;
+package exercise.chapter_40;
 
 public class GolderCustomer extends Customer {
 
     // 속성
     private double discountRatio;
+
+    static {
+        System.out.println("GOLD Customer 클래스가 로딩 됩니다.");
+    }
+
 
     // 행위
     // 1. 돈을 지불한다.

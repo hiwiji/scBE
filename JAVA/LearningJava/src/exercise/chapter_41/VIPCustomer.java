@@ -1,9 +1,10 @@
-package exercise.chapter_34;
+package exercise.chapter_41;
 
 public class VIPCustomer extends Customer {
 
     static int serialNums = 1;
 
+    
     // 속성
     private String agentID; // vip담당직원ID
     private double discountRatio; // 구매할인율

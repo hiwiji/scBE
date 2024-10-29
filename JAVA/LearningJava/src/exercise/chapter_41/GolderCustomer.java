@@ -1,9 +1,11 @@
-package exercise.chapter_34;
+package exercise.chapter_41;
 
 public class GolderCustomer extends Customer {
 
     // 속성
     private double discountRatio;
+
+
 
     // 행위
     // 1. 돈을 지불한다.
