@@ -1,4 +1,6 @@
-package exercise.chapter_43;
+package exercise.chapter_47;
+
+import java.util.Objects;
 
 public class Customer {
 
@@ -9,8 +11,8 @@ public class Customer {
     String hello2 = "Hello2";
 
 
-    protected String customerID; // 고객id
-    protected String name; // 고객이름
+    public String customerID; // 고객id
+    public String name; // 고객이름
     protected String customerGrade; // 고객등급
 
     protected int bonusPoint; // 보너스포인트
@@ -23,7 +25,7 @@ public class Customer {
         return price;
     }
 
-   protected Customer(){}
+   Customer(){}
 
     public Customer(String customerID, String name) {
         this(name);
@@ -68,5 +70,12 @@ public class Customer {
 
             return false; // 그렇지 않으면 false 반환
         }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(this.customerID);
+    }
+
+
     }
 
