@@ -1,13 +1,12 @@
 package com.github.supercoding.repository;
 
-import com.github.supercoding.web.dto.Item;
-import com.github.supercoding.web.dto.ItemBody;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Repository
 public class ElectronicStoreItemJdbcDao implements ElectronicStoreItemRepository{
@@ -59,5 +58,17 @@ public class ElectronicStoreItemJdbcDao implements ElectronicStoreItemRepository
                             itemEntity.getCpu(), itemEntity.getCapacity(), idInt);
 
         return jdbcTemplate.queryForObject( "SELECT * FROM item WHERE id = ? ", itemEntityRowMapper, idInt);
+    }
+
+
+    @Override
+    public void deleteItem(int idInt) {
+        jdbcTemplate.update("DELETE FROM item WHERE id = ?", idInt);
+    }
+
+
+    @Override
+    public ItemEntity findItemById(Integer idInt) {
+        return jdbcTemplate.queryForObject("SELECT * FROM item WHERE id = ?", itemEntityRowMapper, idInt);
     }
 }

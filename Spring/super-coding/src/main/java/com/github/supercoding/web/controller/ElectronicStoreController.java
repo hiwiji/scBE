@@ -2,6 +2,7 @@ package com.github.supercoding.web.controller;
 
 import com.github.supercoding.repository.ElectronicStoreItemRepository;
 import com.github.supercoding.repository.ItemEntity;
+import com.github.supercoding.service.ElectronicStoreItemService;
 import com.github.supercoding.web.dto.Item;
 import com.github.supercoding.web.dto.ItemBody;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +19,10 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class ElectronicStoreController {
 
+    private ElectronicStoreItemService electronicStoreItemService;
 
-    private ElectronicStoreItemRepository electronicStoreItemRepository;
-
-
-    public ElectronicStoreController(ElectronicStoreItemRepository electronicStoreItemRepository) {
-        this.electronicStoreItemRepository = electronicStoreItemRepository;
+    public ElectronicStoreController(ElectronicStoreItemService electronicStoreItemService) {
+        this.electronicStoreItemService = electronicStoreItemService;
     }
 
     private static int serialItemId = 1;
@@ -41,105 +40,49 @@ public class ElectronicStoreController {
     // 1. 모든 아이템 조회(get)
     @GetMapping("/items")
     public List<Item> findAllItem() {
-        List<ItemEntity> itemEntities = electronicStoreItemRepository.findAllItems();
-        return itemEntities.stream().map(Item::new).collect(Collectors.toList());
+        return electronicStoreItemService.findAllItem();
     }
 
     // 2. 새로운 아이템 등록(post)
 
     @PostMapping("/items")
-
     public String registerItem(@RequestBody ItemBody itemBody) {
-        // 아이템등록은 아이템조회랑 필드값이 다름
-        // (조회는 시작이 id로 시작하는데, 등록은 이름부터 시작해서 새로운 dto를 만들어준다)
-//        Item newItem = new Item(serialItemId++, itemBody);
-//        items.add(newItem);
-//        return "ID: " + newItem.getId();
+        Integer itemId = electronicStoreItemService.saveItem(itemBody);
 
-        ItemEntity itemEntity = new ItemEntity(null, itemBody.getName(), itemBody.getType(),
-                itemBody.getPrice(), itemBody.getSpec().getCpu(),
-                itemBody.getSpec().getCapacity());
-
-        Integer itemId = electronicStoreItemRepository.saveItem(itemEntity);
         return "ID : " + itemId;
     }
 
     // 3. ID Path로 아이템 조회(get)
     @GetMapping("/items/{id}")
     public Item findItemByPathId(@PathVariable String id) {
-        Item itemFounded = items.stream()
-                                .filter((item -> item.getId().equals(id)))
-                                .findFirst()
-                                .orElseThrow(() -> new RuntimeException());
-
-        return itemFounded;
+        return electronicStoreItemService.findItemById(id);
     }
 
     // 4. 쿼리 파라미터로 ID 조회
     @GetMapping("/items-query")
     public Item findItemByQueryId(@RequestParam("id") String id) {
-        Item itemFounded = items.stream()
-                .filter((item -> item.getId().equals(id)))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException());
-
-        return itemFounded;
+        return electronicStoreItemService.findItemById(id);
     }
 
     // 5.여러개의 ID쿼리 파라미터로 조회
     @GetMapping("/items-queries")
     public List<Item> findItemByQueryIds(@RequestParam("id") List<String> ids) {
-
-        Set<String> idSet = ids.stream().collect(Collectors.toSet());
-
-        List<Item> itemsFound = items.stream()
-                                     .filter((item -> idSet.contains(item.getId())))
-                                     .collect(Collectors.toList());
-        return itemsFound;
+        return electronicStoreItemService.findItemsByIds(ids);
     }
 
     // 6. path ID로 아이템 삭제(delete)
     @DeleteMapping("/items/{id}")
     public String deleteItemById(@PathVariable String id) {
-        items = items.stream()
-                    .filter((item) -> !item.getId().equals(id))
-                    .collect(Collectors.toList());
+        electronicStoreItemService.deleteItem(id);
         return "Object with id =" + id + "has been deleted";
     }
 
     // 7. pathID와 Body로 업데이트(update)
     @PutMapping("/items/{id}")
     public Item updateItem(@PathVariable String id, @RequestBody ItemBody itemBody) {
-
-        Integer idInt = Integer.valueOf(id);
-        ItemEntity itemEntity  = new ItemEntity(idInt, itemBody.getName(), itemBody.getType(),
-                                itemBody.getPrice(), itemBody.getSpec().getCpu(),
-                                itemBody.getSpec().getCapacity());
-
-        ItemEntity itemEntityUpdated = electronicStoreItemRepository.updateItemEntity(idInt, itemEntity);
-
-        Item itemUpdated = new Item(itemEntityUpdated);
-
-        return itemUpdated;
-
-
-        //        Item itemFounded = items.stream()
-//                                .filter( (item) -> item.getId().equals(id) )
-//                                .findFirst()
-//                                .orElseThrow( () -> new RuntimeException()) ;
-//
-//        items.remove(itemFounded);
-//
-//        Item itemUpdated = new Item(Integer.valueOf(id), itemBody);
-//        items.add(itemUpdated);
-
+        return electronicStoreItemService.updateItem(id, itemBody);
 
     }
-
-
-
-
-
 
 
 }

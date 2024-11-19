@@ -22,15 +22,14 @@ public class Item {
         this.spec = itemBody.getSpec();
     }
 
+    // ItemEntity 기반 생성자
     public Item(ItemEntity itemEntity) {
-        this.id = itemEntity.getCapacity();
+        this.id = String.valueOf(itemEntity.getId());
+        this.name = itemEntity.getName();
         this.type = itemEntity.getType();
         this.price = itemEntity.getPrice();
-        this.name = itemEntity.getName();
         this.spec = new Spec(itemEntity.getCpu(), itemEntity.getCapacity());
     }
-
-
 
     public Item(String id, String name, String type, Integer price, String cpu, String capacity) {
         this.id = id;
@@ -64,6 +63,7 @@ public class Item {
     }
 
 
+    // Equals & HashCode
     @Override
     public boolean equals(Object o) {
         if (this == o) {
