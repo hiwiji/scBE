@@ -12,29 +12,49 @@ import javax.sql.DataSource;
 @Configuration
 public class JdbcConfig {
 
+    // 빈 서버 분리하기
+    @Bean
+    public DataSource dataSource1() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setUsername("root");
+        dataSource.setPassword("12341234");
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/chapter_96?useUnicode=true&characterEncoding=UTF-8");
 
-        @Bean
-        public DataSource dataSource() {
-            DriverManagerDataSource dataSource = new DriverManagerDataSource();
-            dataSource.setUsername("root");
-            dataSource.setPassword("12341234");
-            dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-            dataSource.setUrl("jdbc:mysql://localhost:3306/chapter_96?useUnicode=true&characterEncoding=UTF-8");
+        return dataSource;
+    }
+    
+    @Bean
+    public DataSource dataSource2() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setUsername("root");
+        dataSource.setPassword("12341234");
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/chapter_97?useUnicode=true&characterEncoding=UTF-8");
 
-            return dataSource;
-        }
+        return dataSource;
+    }
+    
+    @Bean
+    public JdbcTemplate jdbcTemplate1() {
+        return new JdbcTemplate(dataSource1());
+    }
+
+    @Bean
+    public JdbcTemplate jdbcTemplate2() {
+        return new JdbcTemplate(dataSource1());
+    }
 
 
-        @Bean
-        public JdbcTemplate jdbcTemplate() {
-            return new JdbcTemplate(dataSource());
-        }
+    @Bean( name = "tm1")
+    public PlatformTransactionManager transactionManage1() {
+        return new DataSourceTransactionManager(dataSource1());
+    }
 
-
-        @Bean
-        public PlatformTransactionManager transactionManager() {
-            return new DataSourceTransactionManager(dataSource());
-        }
+    @Bean( name = "tm2")
+    public PlatformTransactionManager transactionManager2() {
+        return new DataSourceTransactionManager(dataSource1());
+    }
 
 
 }
