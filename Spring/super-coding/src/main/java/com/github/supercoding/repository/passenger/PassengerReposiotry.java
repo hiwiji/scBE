@@ -1,8 +1,5 @@
 package com.github.supercoding.repository.passenger;
 
-public interface PassengerRepository {
-
+public interface PassengerReposiotry {
     Passenger findPassengerByUserId(Integer userId);
-
-
 }

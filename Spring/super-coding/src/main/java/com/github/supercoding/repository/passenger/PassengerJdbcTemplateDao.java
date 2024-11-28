@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class PassengerJdbcTemplateDao implements PassengerRepository {
+public class PassengerJdbcTemplateDao implements PassengerReposiotry {
 
     private JdbcTemplate template;
 

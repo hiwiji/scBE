@@ -1,9 +1,10 @@
 package com.github.supercoding.web.controller;
 
 import com.github.supercoding.service.ElectronicStoreItemService;
-import com.github.supercoding.web.dto.BuyOrder;
-import com.github.supercoding.web.dto.Item;
-import com.github.supercoding.web.dto.ItemBody;
+import com.github.supercoding.web.dto.items.BuyOrder;
+import com.github.supercoding.web.dto.items.Item;
+import com.github.supercoding.web.dto.items.ItemBody;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -13,25 +14,22 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class ElectronicStoreController {
 
-    private ElectronicStoreItemService electronicStoreItemService;
+    private final ElectronicStoreItemService electronicStoreItemService;
 
-    public ElectronicStoreController(ElectronicStoreItemService electronicStoreItemService) {
-        this.electronicStoreItemService = electronicStoreItemService;
-    }
-
-    private static int serialItemId = 1;
+    //private static int serialItemId = 1;
 
     // db가 연결되어 있지 않아 list로 db 데이터값 만들어주기
-    private List<Item> items = new ArrayList<>(Arrays.asList(
-            new Item(String.valueOf(serialItemId++), "Apple iPhone 12 Pro Max", "Smartphone", 1490000, "A14 Bionic", "512GB"),
-            new Item(String.valueOf(serialItemId++), "Samsung Galaxy S21 Ultra", "Smartphone", 1690000, "Exynos 2100", "256GB"),
-            new Item(String.valueOf(serialItemId++), "Google Pixel 6 Pro", "Smartphone", 1290000, "Google Tensor", "128GB"),
-            new Item(String.valueOf(serialItemId++), "Dell XPS 15", "Laptop", 2290000, "Intel Core i9", "1TB SSD"),
-            new Item(String.valueOf(serialItemId++), "Sony Alpha 7 III", "Mirrorless Camera", 2590000, "BIONZ X", "No internal storage"),
-            new Item(String.valueOf(serialItemId++), "Microsoft Xbox Series X", "Gaming Console", 499000, "Custom AMD Zen 2", "1TB SSD")
-    ));
+//    private List<Item> items = new ArrayList<>(Arrays.asList(
+//            new Item(String.valueOf(serialItemId++), "Apple iPhone 12 Pro Max", "Smartphone", 1490000, "A14 Bionic", "512GB"),
+//            new Item(String.valueOf(serialItemId++), "Samsung Galaxy S21 Ultra", "Smartphone", 1690000, "Exynos 2100", "256GB"),
+//            new Item(String.valueOf(serialItemId++), "Google Pixel 6 Pro", "Smartphone", 1290000, "Google Tensor", "128GB"),
+//            new Item(String.valueOf(serialItemId++), "Dell XPS 15", "Laptop", 2290000, "Intel Core i9", "1TB SSD"),
+//            new Item(String.valueOf(serialItemId++), "Sony Alpha 7 III", "Mirrorless Camera", 2590000, "BIONZ X", "No internal storage"),
+//            new Item(String.valueOf(serialItemId++), "Microsoft Xbox Series X", "Gaming Console", 499000, "Custom AMD Zen 2", "1TB SSD")
+//    ));
 
     // 1. 모든 아이템 조회(get)
     @GetMapping("/items")
@@ -86,7 +84,4 @@ public class ElectronicStoreController {
 
         return "요청하신 Item 중 " + orderItemNums + "개를 구매하였습니다.";
     }
-
-
-
 }

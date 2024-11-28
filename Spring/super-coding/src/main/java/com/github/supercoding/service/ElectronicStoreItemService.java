@@ -4,9 +4,11 @@ import com.github.supercoding.repository.Items.ElectronicStoreItemRepository;
 import com.github.supercoding.repository.Items.ItemEntity;
 import com.github.supercoding.repository.storeSales.StoreSales;
 import com.github.supercoding.repository.storeSales.StoreSalesRepository;
-import com.github.supercoding.web.dto.BuyOrder;
-import com.github.supercoding.web.dto.Item;
-import com.github.supercoding.web.dto.ItemBody;
+import com.github.supercoding.service.mapper.ItemMapper;
+import com.github.supercoding.web.dto.items.BuyOrder;
+import com.github.supercoding.web.dto.items.Item;
+import com.github.supercoding.web.dto.items.ItemBody;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,22 +16,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ElectronicStoreItemService {
 
-    private ElectronicStoreItemRepository electronicStoreItemRepository;
-    private StoreSalesRepository storeSalesRepository;
+    private final ElectronicStoreItemRepository electronicStoreItemRepository;
+    private final StoreSalesRepository storeSalesRepository;
 
-    // 서비스 클래스 생성자
-    public ElectronicStoreItemService(ElectronicStoreItemRepository electronicStoreItemRepository, StoreSalesRepository storeSalesRepository) {
-        this.electronicStoreItemRepository = electronicStoreItemRepository;
-        this.storeSalesRepository = storeSalesRepository;
-    }
 
     // 1. 모든 아이템 조회(get)
     public List<Item> findAllItem() {
         List<ItemEntity> itemEntities = electronicStoreItemRepository.findAllItems();
-        return itemEntities.stream().map(Item::new).collect(Collectors.toList());
-
+        return itemEntities.stream().map(ItemMapper.INSTANCE::itemEntityToItem).collect(Collectors.toList());
     }
 
     // 2. 새로운 아이템 등록(post)
@@ -46,7 +43,7 @@ public class ElectronicStoreItemService {
     public Item findItemById(String id) {
         Integer idInt = Integer.parseInt(id);
         ItemEntity itemEntity = electronicStoreItemRepository.findItemById(idInt);
-        Item item = new Item(itemEntity);
+        Item item = ItemMapper.INSTANCE.itemEntityToItem(itemEntity);
         return item;
     }
 
@@ -54,9 +51,9 @@ public class ElectronicStoreItemService {
     public List<Item> findItemsByIds(List<String> ids) {
         List<ItemEntity> itemEntities = electronicStoreItemRepository.findAllItems();
         return itemEntities.stream()
-                           .map(Item::new)
-                           .filter((item -> ids.contains(item.getId())))
-                           .collect(Collectors.toList());
+                            .map(ItemMapper.INSTANCE::itemEntityToItem)
+                            .filter((item -> ids.contains(item.getId())))
+                            .collect(Collectors.toList());
     }
 
     // 6. path ID로 아이템 삭제(delete)
@@ -75,7 +72,7 @@ public class ElectronicStoreItemService {
 
         ItemEntity itemEntityUpdated = electronicStoreItemRepository.updateItemEntity(idInt, itemEntity);
 
-        return new Item(itemEntityUpdated);
+        return ItemMapper.INSTANCE.itemEntityToItem(itemEntityUpdated);
     }
 
 
